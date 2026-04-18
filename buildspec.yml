@@ -7,14 +7,14 @@ phases:
 
   build:
     commands:
-      - echo Build started on `date`
+      - echo Build started
       - mvn clean package -DskipTests
 
   post_build:
     commands:
-      - echo Build completed on `date`
+      - echo Build completed
 
 artifacts:
   files:
-    - target/*.jar
+    - target/examp-project.jar
   discard-paths: yes
