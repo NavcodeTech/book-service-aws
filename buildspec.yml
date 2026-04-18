@@ -10,8 +10,6 @@ phases:
   install:
     runtime-versions:
       java: corretto17
-    commands:
-      - echo Installing dependencies...
 
   pre_build:
     commands:
@@ -22,35 +20,34 @@ phases:
 
   build:
     commands:
-      - echo Build started
-      - echo Packaging Spring Boot app...
+      - echo Build started on `date`
       - mvn clean package -DskipTests
-
-      - echo Building Docker image...
       - docker build -t $IMAGE_REPO_NAME:$IMAGE_TAG .
-
       - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $REPOSITORY_URI:$IMAGE_TAG
 
   post_build:
     commands:
-      - echo Pushing Docker image to ECR...
+      - echo Pushing Docker image...
       - docker push $REPOSITORY_URI:$IMAGE_TAG
 
       - echo Creating Dockerrun.aws.json...
-      - printf '{
+      - |
+        cat <<EOF > Dockerrun.aws.json
+        {
           "AWSEBDockerrunVersion": 1,
           "Image": {
-            "Name": "%s",
+            "Name": "$REPOSITORY_URI:$IMAGE_TAG",
             "Update": "true"
           },
           "Ports": [
             {
-              "ContainerPort": 5000
+              "ContainerPort": 8080
             }
           ]
-        }' $REPOSITORY_URI:$IMAGE_TAG > Dockerrun.aws.json
+        }
+        EOF
 
 artifacts:
   files:
     - Dockerrun.aws.json
-    - target/examp-project.jar
+    -target/examp-project.jar
