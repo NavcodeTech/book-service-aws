@@ -41,7 +41,7 @@ phases:
           },
           "Ports": [
             {
-              "ContainerPort": 8080
+              "ContainerPort": 5000
             }
           ]
         }
