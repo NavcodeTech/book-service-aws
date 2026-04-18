@@ -34,6 +34,11 @@ public class ExampProjectApplication {
 		return books;
 	}
 	
+	@GetMapping("/hello")
+	public String landingPage() {
+		return "Hi welcome to my world";
+	}
+	
 	
 
 }
