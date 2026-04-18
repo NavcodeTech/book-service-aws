@@ -50,4 +50,4 @@ phases:
 artifacts:
   files:
     - Dockerrun.aws.json
-    -target/examp-project.jar
+    - target/examp-project.jar
